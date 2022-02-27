@@ -35,6 +35,23 @@ public class User {
     @Column(name = "user_status", nullable = false)
     private String userStatus;
 
+    public User(Long id, String firstName, String lastName, LocalDate dateOfBirth, String sex, String highestEducation, String address, String country, String state, String city) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.sex = sex;
+        this.highestEducation = highestEducation;
+        this.address = address;
+        this.country = country;
+        this.state = state;
+        this.city = city;
+    }
+
+    public User() {
+
+    }
+
     public String getFirstName() {
         return firstName;
     }

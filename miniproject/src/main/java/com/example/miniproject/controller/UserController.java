@@ -1,32 +1,40 @@
 package com.example.miniproject.controller;
 
 
+import com.example.miniproject.dto.UserDto;
 import com.example.miniproject.model.User;
+import com.example.miniproject.modelmapper.UserDtoToAndFromUser;
 import com.example.miniproject.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/api")
 public class UserController {
-    @Autowired
-    UserService userService;
+    private final UserService userService;
+    private final UserDtoToAndFromUser userDtoToAndFromUser;
 
+    public UserController(UserService userService, UserDtoToAndFromUser userDtoToAndFromUser) {
+        this.userService = userService;
+        this.userDtoToAndFromUser = userDtoToAndFromUser;
+    }
 
 
     @GetMapping("/users/page={var}")
-    private List<User> getAllUsers(@PathVariable("var") int initial) {
-        System.out.println(initial);
-        return userService.getAllUsers(initial);
+    private List<UserDto> getAllUsers(@PathVariable("var") int initial) {
+        return userService.getAllUsers(initial)
+                .stream()
+                .map(userDtoToAndFromUser::toUserDto)
+                .collect(Collectors.toList());
     }
 
 
     @GetMapping("/users/{userid}")
-    private User getUserById(@PathVariable("userid") long userId) {
-        return userService.getUsersById(userId);
+    private UserDto getUserById(@PathVariable("userid") long userId) {
+        return userDtoToAndFromUser.toUserDto(userService.getUsersById(userId));
     }
 
 
