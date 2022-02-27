@@ -36,8 +36,8 @@ public class UserService {
         return userRepository.findAllByIdAndUserStatus(id,"ACTIVE");
     }
 
-    public void addOrEditUser(User user)    {
-        if(validate(user)) {
+    public void addOrEditUser(User user,String xCscApiKeyValue)    {
+        if(validate(user, xCscApiKeyValue)) {
             Optional<User> u = Optional.ofNullable(userRepository.findAllByIdAndUserStatus(user.getId(), "DISABLE"));
             if (!u.isPresent()) {
                 user.setUserStatus("ACTIVE");
@@ -58,16 +58,16 @@ public class UserService {
         userRepository.save(user);
     }*/
 
-    public boolean validate(User user) {
-        return validateCountry(user);
+    public boolean validate(User user, String xCscApiKeyValue) {
+        return validateCountry(user, xCscApiKeyValue);
 
     }
 
-    private boolean validateCountry(User user) {
+    private boolean validateCountry(User user, String xCscApiKeyValue) {
         String url = "https://api.countrystatecity.in/v1/countries";
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
-        headers.add("X-CSCAPI-KEY","");
+        headers.add("X-CSCAPI-KEY",xCscApiKeyValue);
         headers.add("user-agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36");
         HttpEntity <String> entity = new HttpEntity<>(headers);
         ResponseEntity<Country[]> countries = restTemplate.exchange(url, HttpMethod.GET, entity, Country[].class);

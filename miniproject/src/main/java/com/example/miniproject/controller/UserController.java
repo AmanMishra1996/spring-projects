@@ -15,6 +15,8 @@ public class UserController {
     @Autowired
     UserService userService;
 
+
+
     @GetMapping("/users/page={var}")
     private List<User> getAllUsers(@PathVariable("var") int initial) {
         System.out.println(initial);
@@ -23,28 +25,26 @@ public class UserController {
 
 
     @GetMapping("/users/{userid}")
-    private User getBooks(@PathVariable("userid") long user) {
-        return userService.getUsersById(user);
+    private User getUserById(@PathVariable("userid") long userId) {
+        return userService.getUsersById(userId);
     }
 
 
     @DeleteMapping("/user/{userid}")
-    private void deleteBook(@PathVariable("userid") long userid) {
-        userService.softDelete(userid);
+    private void deleteUserByUserId(@PathVariable("userid") long userId) {
+        userService.softDelete(userId);
     }
 
 
     @PostMapping("/users")
-    private void saveBook(@RequestBody User user) {
-        userService.addOrEditUser(user);
+    private void addUser(@RequestBody User user,@RequestHeader("X-CSCAPI-KEY") String xCscApiKeyValue) {
+        userService.addOrEditUser(user, xCscApiKeyValue);
     }
 
 
     @PutMapping("/users")
-    private User update(@RequestBody User user) {
-        userService.addOrEditUser(user);
+    private User editUser(@RequestBody User user,@RequestHeader("X-CSCAPI-KEY") String xCscApiKeyValue) {
+        userService.addOrEditUser(user, xCscApiKeyValue);
         return user;
     }
-
-
 }
