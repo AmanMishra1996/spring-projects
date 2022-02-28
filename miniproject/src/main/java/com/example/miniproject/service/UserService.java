@@ -1,11 +1,10 @@
 package com.example.miniproject.service;
 
+import com.example.miniproject.model.User;
 import com.example.miniproject.model.countrystatecityAPI.City;
 import com.example.miniproject.model.countrystatecityAPI.Country;
 import com.example.miniproject.model.countrystatecityAPI.State;
-import com.example.miniproject.model.User;
 import com.example.miniproject.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,24 +18,23 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService {
-    @Autowired
-    UserRepository userRepository;
-    // Enum might be better choice for Status possible values, similar gender validation,
-    // post method might also notify at the end operation suceess or not
-    // Hardcoded values can be set in properties
-    // Need to understand how line 30 works
-    //Hibernate: select user0_.user_id as user_id1_0_, user0_.address as address2_0_, user0_.city as city3_0_, user0_.country as country4_0_, user0_.date_of_birth as date_of_5_0_, user0_.first_name as first_na6_0_, user0_.highest_education as highest_7_0_, user0_.last_name as last_nam8_0_, user0_.sex as sex9_0_, user0_.state as state10_0_, user0_.user_status as user_st11_0_ from user user0_ where user0_.user_status=? limit ?, ?
-    // seems like it is querying all records then making a Page  for each page query runs need a better understanding
+    final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     public List<User> getAllUsers(int initial) {
         return new ArrayList<>(userRepository.
                 findAllByUserStatus("ACTIVE", PageRequest.of(initial,10)));
     }
 
-    public User getUsersById(long id) {
-        return userRepository.findAllByIdAndUserStatus(id,"ACTIVE");
+    public Optional<User> getUsersById(long id) {
+        return Optional.ofNullable(userRepository.findAllByIdAndUserStatus(id,"ACTIVE"));
     }
 
-    public void addOrEditUser(User user,String xCscApiKeyValue)    {
+    public void addOrEditUser(User user, String xCscApiKeyValue)    {
+
         if(validate(user, xCscApiKeyValue)) {
             Optional<User> u = Optional.ofNullable(userRepository.findAllByIdAndUserStatus(user.getId(), "DISABLE"));
             if (!u.isPresent()) {
@@ -53,10 +51,6 @@ public class UserService {
             userRepository.save(user.get());
         }
     }
-
-   /* public void update(User user, long userId) {
-        userRepository.save(user);
-    }*/
 
     public boolean validate(User user, String xCscApiKeyValue) {
         return validateCountry(user, xCscApiKeyValue);

@@ -13,7 +13,7 @@ public class UserDtoToAndFromUser {
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
         LocalDate dateOfBirth = user.getDateOfBirth();
-        final String sex = user.getSex();
+        String sex = user.getSex();
         String highestEducation = user.getHighestEducation();
         String address = user.getAddress();
         String country = user.getCountry();
@@ -27,7 +27,7 @@ public class UserDtoToAndFromUser {
         String firstName = userDto.getFirstName();
         String lastName = userDto.getLastName();
         LocalDate dateOfBirth = userDto.getDateOfBirth();
-        final String sex = userDto.getSex();
+        String sex = userDto.getSex();
         String highestEducation = userDto.getHighestEducation();
         String address = userDto.getAddress();
         String country = userDto.getCountry();

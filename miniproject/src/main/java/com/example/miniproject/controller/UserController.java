@@ -8,6 +8,7 @@ import com.example.miniproject.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:8080")
@@ -22,7 +23,6 @@ public class UserController {
         this.userDtoToAndFromUser = userDtoToAndFromUser;
     }
 
-
     @GetMapping("/users/page={var}")
     private List<UserDto> getAllUsers(@PathVariable("var") int initial) {
         return userService.getAllUsers(initial)
@@ -31,28 +31,25 @@ public class UserController {
                 .collect(Collectors.toList());
     }
 
-
     @GetMapping("/users/{userid}")
-    private UserDto getUserById(@PathVariable("userid") long userId) {
-        return userDtoToAndFromUser.toUserDto(userService.getUsersById(userId));
+    private UserDto getUserById(@PathVariable("userid") long userDtoId) {
+        Optional<User> usersById = userService.getUsersById(userDtoId);
+        return usersById.map(userDtoToAndFromUser::toUserDto).orElse(null);
     }
-
 
     @DeleteMapping("/user/{userid}")
     private void deleteUserByUserId(@PathVariable("userid") long userId) {
         userService.softDelete(userId);
     }
 
-
     @PostMapping("/users")
-    private void addUser(@RequestBody User user,@RequestHeader("X-CSCAPI-KEY") String xCscApiKeyValue) {
-        userService.addOrEditUser(user, xCscApiKeyValue);
+    private void addUser(@RequestBody UserDto user,@RequestHeader("X-CSCAPI-KEY") String xCscApiKeyValue) {
+        System.out.println(user);
+        userService.addOrEditUser(userDtoToAndFromUser.toUser(user), xCscApiKeyValue);
     }
 
-
     @PutMapping("/users")
-    private User editUser(@RequestBody User user,@RequestHeader("X-CSCAPI-KEY") String xCscApiKeyValue) {
-        userService.addOrEditUser(user, xCscApiKeyValue);
-        return user;
+    private void editUser(@RequestBody UserDto user,@RequestHeader("X-CSCAPI-KEY") String xCscApiKeyValue) {
+        userService.addOrEditUser(userDtoToAndFromUser.toUser(user), xCscApiKeyValue);
     }
 }

@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class UserDto implements Serializable {
+
     private final Long id;
     private final String firstName;
     private final String lastName;
@@ -28,6 +29,8 @@ public class UserDto implements Serializable {
         this.state = state;
         this.city = city;
     }
+
+
 
     public Long getId() {
         return id;
@@ -85,6 +88,7 @@ public class UserDto implements Serializable {
                 Objects.equals(this.state, entity.state) &&
                 Objects.equals(this.city, entity.city);
     }
+
 
     @Override
     public int hashCode() {
