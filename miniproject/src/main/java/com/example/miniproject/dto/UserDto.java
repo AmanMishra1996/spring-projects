@@ -1,7 +1,6 @@
 package com.example.miniproject.dto;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Objects;
 
 public class UserDto implements Serializable {
@@ -9,7 +8,7 @@ public class UserDto implements Serializable {
     private final Long id;
     private final String firstName;
     private final String lastName;
-    private final LocalDate dateOfBirth;
+    private final String dateOfBirth;
     private final String sex;
     private final String highestEducation;
     private final String address;
@@ -17,7 +16,7 @@ public class UserDto implements Serializable {
     private final String state;
     private final String city;
 
-    public UserDto(Long id, String firstName, String lastName, LocalDate dateOfBirth, String sex, String highestEducation, String address, String country, String state, String city) {
+    public UserDto(Long id, String firstName, String lastName, String dateOfBirth, String sex, String highestEducation, String address, String country, String state, String city) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -44,7 +43,7 @@ public class UserDto implements Serializable {
         return lastName;
     }
 
-    public LocalDate getDateOfBirth() {
+    public String getDateOfBirth() {
         return dateOfBirth;
     }
 

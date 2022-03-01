@@ -5,6 +5,8 @@ import com.example.miniproject.model.countrystatecityAPI.City;
 import com.example.miniproject.model.countrystatecityAPI.Country;
 import com.example.miniproject.model.countrystatecityAPI.State;
 import com.example.miniproject.repository.UserRepository;
+import com.example.miniproject.service.externalAPI.CountryStateCityApiService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +21,8 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
     final UserRepository userRepository;
+    @Autowired
+    CountryStateCityApiService countryStateCityApiService;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;

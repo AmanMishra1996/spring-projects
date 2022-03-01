@@ -44,12 +44,17 @@ public class UserController {
 
     @PostMapping("/users")
     private void addUser(@RequestBody UserDto user,@RequestHeader("X-CSCAPI-KEY") String xCscApiKeyValue) {
+        // Deserialization to User working fine ,with dateOfBirth as LocalDate
         System.out.println(user);
         userService.addOrEditUser(userDtoToAndFromUser.toUser(user), xCscApiKeyValue);
     }
 
     @PutMapping("/users")
-    private void editUser(@RequestBody UserDto user,@RequestHeader("X-CSCAPI-KEY") String xCscApiKeyValue) {
+    private void editUser(@RequestBody UserDto user, @RequestHeader("X-CSCAPI-KEY") String xCscApiKeyValue) {
+        // Deserialisation from JSON to UserDto isn't working when dateOfBirth is LocalDate Type
+        // Deserialisation from JSON to UserDto is working when dateOfBirth is String Type
+
+        System.out.println(user);
         userService.addOrEditUser(userDtoToAndFromUser.toUser(user), xCscApiKeyValue);
     }
 }
